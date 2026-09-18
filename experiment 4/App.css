@@ -1,0 +1,631 @@
+.app {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.app-main {
+  flex: 1 1 auto;
+  min-width: 0; /* allow the grid to shrink instead of overflowing */
+}
+
+@media (max-width: 960px) {
+  .app {
+    flex-direction: column;
+  }
+}
+
+/* ---------- Mode badge (shown in the calendar title) ---------- */
+
+.mode-badge {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+.mode-badge--optimal {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.mode-badge--non-optimal {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* ---------- Toolbar ---------- */
+
+.calendar-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.calendar-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.calendar-nav {
+  display: flex;
+  gap: 6px;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.05s ease, opacity 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background-color: #4f46e5;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+}
+
+.btn-secondary {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+.btn-secondary:hover {
+  background-color: #d1d5db;
+}
+
+.btn-danger {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  margin-right: auto;
+}
+
+.btn-danger:hover {
+  background-color: #fecaca;
+}
+
+/* ---------- Weekday row ---------- */
+
+.calendar-weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+
+.calendar-weekday {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  padding: 6px 0;
+}
+
+/* ---------- Grid ---------- */
+
+.calendar-grid {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.calendar-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-week + .calendar-week {
+  border-top: 1px solid #e5e7eb;
+}
+
+.day-cell {
+  position: relative;
+  min-height: 110px;
+  padding: 6px;
+  border-right: 1px solid #f0f1f3;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.day-cell:last-child {
+  border-right: none;
+}
+
+.day-cell:hover {
+  background-color: #f9fafb;
+}
+
+.day-cell--muted {
+  background-color: #fafafa;
+  color: #b0b3ba;
+}
+
+.day-cell--today .day-cell-number {
+  background-color: #4f46e5;
+  color: #fff;
+  border-radius: 999px;
+}
+
+.day-cell--drag-over {
+  background-color: #eef2ff;
+  outline: 2px dashed #4f46e5;
+  outline-offset: -2px;
+}
+
+.day-cell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.day-cell-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.day-cell-add {
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  visibility: hidden;
+}
+
+.day-cell:hover .day-cell-add {
+  visibility: visible;
+}
+
+.day-cell-add:hover {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+.day-cell-events {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow-y: auto;
+}
+
+/* ---------- Event chip ---------- */
+
+.post-event {
+  position: relative;
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 11px;
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+  cursor: grab;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.post-event:active {
+  cursor: grabbing;
+}
+
+.post-event-time {
+  font-weight: 700;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+.post-event-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Modal ---------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 50;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal h2 {
+  margin: 0 0 4px;
+}
+
+.modal-date {
+  margin: 0 0 16px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.modal label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #374151;
+}
+
+.modal input,
+.modal textarea {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.modal-colors {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.color-swatch--active {
+  border-color: #111827;
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* ---------- Render flash overlay (Render Optimizer) ---------- */
+/*
+ * Mounted fresh (new `key`) every time an instrumented component's
+ * render function actually executes, so the fade-out animation
+ * restarts on every real render. React.memo skipping a render means
+ * this element never even gets a chance to mount.
+ */
+
+.render-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 5;
+  animation: render-flash-fade 480ms ease-out forwards;
+}
+
+.render-flash--optimal {
+  background-color: rgba(5, 150, 105, 0.32); /* green: efficient render */
+}
+
+.render-flash--non-optimal {
+  background-color: rgba(220, 38, 38, 0.32); /* red: wasted render */
+}
+
+@keyframes render-flash-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .render-flash {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ---------- Render Optimizer panel ---------- */
+
+.render-panel {
+  flex: 0 0 320px;
+  width: 320px;
+  max-width: 100%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 18px;
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+
+@media (max-width: 960px) {
+  .render-panel {
+    flex: 1 1 auto;
+    width: 100%;
+    position: static;
+    max-height: none;
+  }
+}
+
+.render-panel-title {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.render-panel-sub {
+  margin: 0 0 16px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+.render-panel-section {
+  padding: 14px 0;
+  border-top: 1px solid #f0f1f3;
+}
+
+.render-panel-section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.render-panel-section h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.render-panel-row-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.render-panel-row-header h3 {
+  margin: 0;
+}
+
+.render-panel-hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+.render-panel-hint code {
+  background: #f3f4f6;
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-size: 11.5px;
+}
+
+/* Mode toggle */
+
+.render-mode-toggle {
+  display: flex;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mode-btn {
+  flex: 1;
+  border: none;
+  background: #ffffff;
+  padding: 8px 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #6b7280;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.mode-btn + .mode-btn {
+  border-left: 1px solid #e5e7eb;
+}
+
+.mode-btn--active.mode-btn--optimal {
+  background-color: #059669;
+  color: #ffffff;
+}
+
+.mode-btn--active.mode-btn--non-optimal {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+/* Simulator controls */
+
+.render-panel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+}
+
+.switch input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.btn-small {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.render-panel-tick-count {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  color: #374151;
+}
+
+/* Stats table */
+
+.render-stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.render-stats-table th,
+.render-stats-table td {
+  padding: 6px 4px;
+  text-align: left;
+  border-bottom: 1px solid #f0f1f3;
+}
+
+.render-stats-table th {
+  color: #6b7280;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.render-stats-table td.render-stats-nonoptimal,
+.render-stats-table th.render-stats-nonoptimal {
+  text-align: center;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.render-stats-table td.render-stats-optimal,
+.render-stats-table th.render-stats-optimal {
+  text-align: center;
+  color: #047857;
+  font-weight: 700;
+}
+
+/* Explanation list */
+
+.render-panel-explain {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #374151;
+}
+
+.render-panel-explain li + li {
+  margin-top: 8px;
+}
+
+.render-panel-explain code {
+  background: #f3f4f6;
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-size: 11.5px;
+}
+
+/* Render log */
+
+.render-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid #f0f1f3;
+  border-radius: 8px;
+}
+
+.render-log-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 8px;
+  font-size: 11.5px;
+  border-left: 3px solid transparent;
+}
+
+.render-log-item + .render-log-item {
+  border-top: 1px solid #f5f5f6;
+}
+
+.render-log-item--optimal {
+  border-left-color: #059669;
+}
+
+.render-log-item--non-optimal {
+  border-left-color: #dc2626;
+}
+
+.render-log-key {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  color: #111827;
+}
+
+.render-log-time {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
